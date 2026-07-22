@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(g++ --version)",
+      "Bash(g++ -std=c++17 -Wall -Wextra -c exercises/ex2_advanced.cpp -o /dev/null)",
+      "Bash(rm -rf build)",
+      "Bash(cmake -B build)",
+      "Bash(cmake --build build)",
+      "Bash(./build/sol_ex1_basic)",
+      "Bash(./build/sol_ex2_advanced)",
+      "Bash(g++ -std=c++17 -Wall -Wextra -Wpedantic -c solutions/ex1_basic.cpp -o /tmp/o.o)",
+      "Bash(./build/ex1_basic)",
+      "Bash(echo \"ex1 exit=$? \\(nonzero=has FAILs, expected\\)\")",
+      "Bash(./build/ex2_advanced)",
+      "Bash(echo \"ex2 exit=$? \\(nonzero=has FAILs, expected\\)\")",
+      "Bash(echo \"ex1 exit=$?\")",
+      "Bash(echo \"ex2 exit=$?\")",
+      "Bash(g++ -std=c++17 -Wall -Wextra -Wpedantic -Iinclude exercises/robot_app.cpp -pthread -o /tmp/ex_robot)",
+      "Bash(/tmp/ex_robot)",
+      "Bash(echo \"exit=$? \\(kỳ vọng 1 = chưa làm TODO\\)\")",
+      "Bash(cmake --build build --target t01_ex2_advanced)",
+      "Bash(./build/01_smart_pointers/ex2_advanced)",
+      "Bash(echo \"exercise exit=$? \\(kỳ vọng 1\\)\")",
+      "Bash(./build/01_smart_pointers/sol_ex2_advanced)",
+      "Bash(echo \"solution exit=$? \\(kỳ vọng 0\\)\")"
+    ]
+  }
+}
