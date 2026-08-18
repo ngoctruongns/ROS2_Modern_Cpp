@@ -24,16 +24,14 @@ static int g_fail = 0;
 // Stub trả về 0 -> các CHECK sẽ FAIL cho tới khi bạn sửa.
 template<typename... Args>
 auto sum(Args... args) {
-  (void)sizeof...(args);
-  return 0; // TODO: dùng fold expression (... + args)
+  return (... + args); // TODO: dùng fold expression (... + args)
 }
 
 // ----------------------------------------------------------------------------
 // TODO 2: `count_args` — số lượng đối số, dùng sizeof...(pack).
 template<typename... Args>
 std::size_t count_args(Args... args) {
-  (void)sizeof...(args);
-  return 0; // TODO: trả về sizeof...(args)
+  return sizeof...(args); // TODO: trả về sizeof...(args)
 }
 
 // ----------------------------------------------------------------------------
@@ -45,6 +43,8 @@ std::size_t count_args(Args... args) {
 //   LƯU Ý: phải là `if constexpr` (không phải `if`) để nhánh sai bị loại lúc biên dịch.
 template<typename T>
 std::string describe() {
+    if constexpr (std::is_integral_v<T>) return "integral";
+    if constexpr (std::is_floating_point_v<T>) return "floating";
   return "other"; // TODO: thay bằng if constexpr phân loại theo T
 }
 

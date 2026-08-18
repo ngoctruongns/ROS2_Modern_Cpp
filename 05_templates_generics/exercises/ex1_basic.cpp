@@ -26,8 +26,7 @@ static int g_fail = 0;
 // Hiện tại stub luôn trả về `a` -> một số CHECK sẽ FAIL cho tới khi bạn sửa.
 template<typename T>
 T max_of(T a, T b) {
-  (void)b;
-  return a; // TODO: trả về giá trị lớn hơn giữa a và b
+  return (a < b) ? b : a; // TODO: trả về giá trị lớn hơn giữa a và b
 }
 
 // ----------------------------------------------------------------------------
@@ -39,26 +38,28 @@ class Stack {
   std::vector<T> data_;
 public:
   void push(const T& v) {
-    (void)v;
+    data_.push_back(v);
     // TODO: thêm v vào cuối data_
   }
   T pop() {
+    T temp = data_.back();
+    data_.pop_back();
     // TODO: lấy phần tử cuối, xoá nó khỏi data_, rồi trả về.
-    return T{}; // stub
+    return temp; // stub
   }
   bool empty() const {
-    return true; // TODO: data_ rỗng?
+    return data_.empty(); // TODO: data_ rỗng?
   }
   std::size_t size() const {
-    return 0; // TODO: số phần tử hiện có
+    return data_.size(); // TODO: số phần tử hiện có
   }
 };
 
 // ----------------------------------------------------------------------------
 // TODO 3: alias template.
 //   Định nghĩa `Vec<T>` là bí danh cho std::vector<T>.
-// template<typename T>
-// using Vec = ...;
+template<typename T>
+using Vec = std::vector<T>;
 
 // ----------------------------------------------------------------------------
 // TODO 4: non-type template parameter.
@@ -66,7 +67,7 @@ public:
 template<typename T, int N>
 struct FixedArray {
   T data[N];
-  static constexpr int size = 0; // TODO: đặt bằng N
+  static constexpr int size = N; // TODO: đặt bằng N
 };
 
 int main() {
@@ -96,9 +97,9 @@ int main() {
 
   // --- alias template ---
   // Bỏ comment sau khi định nghĩa Vec ở TODO 3:
-  // Vec<int> v = {1, 2, 3};
-  // CHECK(v.size() == 3);
-  // CHECK(std::is_same<Vec<int>, std::vector<int>>::value);
+  Vec<int> v = {1, 2, 3};
+  CHECK(v.size() == 3);
+  CHECK((std::is_same_v<Vec<int>, std::vector<int>>));
 
   // --- non-type template param ---
   FixedArray<float, 4> fa;

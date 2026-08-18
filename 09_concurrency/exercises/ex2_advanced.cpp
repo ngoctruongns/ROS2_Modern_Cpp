@@ -34,13 +34,23 @@ public:
   //   { std::lock_guard<std::mutex> lk(m_); q_.push(v); }
   //   cv_.notify_one();
   void push(int v) {
-    (void)v;   // TODO
+    {
+        std::lock_guard<std::mutex> lk(m_);
+        q_.push(v);
+    }
+    cv_.notify_one();
   }
 
   // TODO 2: dùng std::unique_lock; cv_.wait(lk, [&]{ return !q_.empty(); });
   //         rồi lấy front, pop, và trả về giá trị.
   int pop() {
-    return -1;   // stub: KHÔNG chặn (để đề vẫn chạy tới khi bạn điền TODO)
+      std::unique_lock<std::mutex> ulk(m_);
+      cv_.wait(ulk, [&] { return !q_.empty(); });
+
+      int val = q_.front();
+      q_.pop();
+
+      return val; // stub: KHÔNG chặn (để đề vẫn chạy tới khi bạn điền TODO)
   }
 
 private:
@@ -77,15 +87,15 @@ int main() {
 
   // TODO 3: (đồng thời) dùng std::async chạy sum_1_to_n(M) trên luồng riêng.
   //   std::future<long> fut = std::async(std::launch::async, sum_1_to_n, M);
-  std::future<long> fut;   // TODO: khởi tạo bằng std::async như trên
+  std::future<long> fut = std::async(std::launch::async, sum_1_to_n, M);   // TODO: khởi tạo bằng std::async như trên
 
   // BẮT BUỘC: join cả hai luồng TRƯỚC KHI kiểm tra (để kết quả xác định).
   producer.join();
   consumer.join();
 
   // TODO 4: lấy kết quả async bằng fut.get() (chặn tới khi xong).
-  long async_sum = 0;   // TODO: = fut.get();
-  (void)fut;
+  long async_sum = fut.get();   // TODO: = fut.get();
+//   (void)fut;
 
   const long expected = static_cast<long>(M) * (M + 1) / 2;   // tổng 1..M
 

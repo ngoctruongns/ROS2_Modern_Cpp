@@ -60,9 +60,11 @@ public:
   //   - Tăng bộ đếm move: ++moves_;
   //   - Nhớ để `noexcept` (quan trọng cho std::vector khi grow).
   Buffer(Buffer&& o) noexcept {
-    (void)o;
-    data_ = nullptr;   // <-- STUB: chưa cướp gì. Hãy thay bằng phần TODO ở trên.
-    size_ = 0;
+    data_ = o.data_;   // <-- STUB: chưa cướp gì. Hãy thay bằng phần TODO ở trên.
+    size_ = o.size_;
+    o.data_ = nullptr;
+    o.size_ = 0;
+    ++moves_;
   }
 
   // TODO 2: MOVE ASSIGNMENT.
@@ -70,8 +72,17 @@ public:
   //   - Giải phóng tài nguyên hiện tại (delete[] data_) rồi cướp từ `o`.
   //   - Vô hiệu hoá nguồn và ++moves_.
   Buffer& operator=(Buffer&& o) noexcept {
-    (void)o;
-    // <-- STUB: chưa làm gì. Hãy điền phần TODO ở trên.
+    if (this != &o) {
+        delete[] data_; // free old memory
+
+        data_ = o.data_;
+        size_ = o.size_;
+    
+        o.data_ = nullptr;
+        o.size_ = 0;
+
+        ++moves_;
+    }
     return *this;
   }
 
